@@ -1,0 +1,146 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "EDULINK CI API",
+    "description": "Plateforme SaaS de recrutement pour l'éducation en Côte d'Ivoire",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Serveur actuel"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "paths": {
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Connexion utilisateur",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Succès" },
+          "401": { "description": "Non autorisé" }
+        }
+      }
+    },
+    "/api/v1/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Inscription utilisateur/candidat",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" },
+                  "fullName": { "type": "string" },
+                  "phone": { "type": "string" },
+                  "discipline": { "type": "string" },
+                  "level": { "type": "string" },
+                  "experience": { "type": "number" },
+                  "city": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Succès" }
+        }
+      }
+    },
+    "/api/v1/jobs": {
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "Liste des offres d'emploi",
+        "parameters": [
+          { "name": "city", "in": "query", "schema": { "type": "string" } },
+          { "name": "discipline", "in": "query", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Liste des offres" }
+        }
+      }
+    },
+    "/api/v1/applications": {
+      "post": {
+        "tags": ["Applications"],
+        "summary": "Postuler à une offre",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "jobId": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Candidature envoyée" }
+        }
+      }
+    },
+    "/api/v1/applications/me": {
+      "get": {
+        "tags": ["Applications"],
+        "summary": "Voir ses candidatures",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Liste de ses candidatures" }
+        }
+      }
+    },
+    "/api/v1/upload/cv": {
+      "post": {
+        "tags": ["Uploads"],
+        "summary": "Upload de CV",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "CV enregistré avec succès" }
+        }
+      }
+    }
+  }
+}

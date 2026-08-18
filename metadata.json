@@ -1,0 +1,6 @@
+{
+  "name": "EDULINK CI",
+  "description": "Plateforme de recrutement pour enseignants en Côte d'Ivoire",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
